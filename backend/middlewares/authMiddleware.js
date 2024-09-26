@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken');
+const { verifyToken } = require('../utils/jwtutils');
 
 const auth = (req, res, next) => {
     // Get the token from the header
@@ -11,7 +11,10 @@ const auth = (req, res, next) => {
 
     try {
         // Verify token
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const decoded = verifyToken(token);
+        if (!decoded) {
+            return res.status(401).json({ msg: 'Invalid token' });
+        }
         // Add user info from payload to the request
         req.userId = decoded.userId;
         next();  // Move to the next middleware or controller
