@@ -1,2 +1,0 @@
-# coursevita-hackathon
-hi
