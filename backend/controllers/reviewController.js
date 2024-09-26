@@ -2,12 +2,12 @@ const Review = require('../models/reviewModel');
 
 // Post a review
 const postReview = async (req, res) => {
-    const { reviewee, rating, comment } = req.body;
+    const { user, skill, rating, comment } = req.body;
 
     try {
         const review = new Review({
-            reviewer: req.userId,
-            reviewee,
+            user: req.userId,
+            skill,
             rating,
             comment
         });
@@ -22,8 +22,8 @@ const postReview = async (req, res) => {
 // Get reviews for a user
 const getReviews = async (req, res) => {
     try {
-        const reviews = await Review.find({ reviewee: req.params.userId })
-            .populate('reviewer', 'username email');
+        const reviews = await Review.find({ user: req.params.userId })
+            .populate('user', 'username email');
         res.json(reviews);
     } catch (err) {
         res.status(500).json({ error: err.message });

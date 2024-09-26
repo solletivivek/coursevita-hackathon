@@ -2,14 +2,14 @@ const Barter = require('../models/barterModel');
 
 // Initiate a barter trade
 const initiateTrade = async (req, res) => {
-    const { user2, skillOffered, skillNeeded } = req.body;
+    const { userRequested, offeredSkill, requestedSkill } = req.body;
 
     try {
         const barter = new Barter({
-            user1: req.userId,
-            user2,
-            skillOffered,
-            skillNeeded
+            userOffered: req.userId,
+            userRequested,
+            offeredSkill,
+            requestedSkill
         });
 
         await barter.save();
@@ -41,8 +41,8 @@ const updateTrade = async (req, res) => {
 const getTrades = async (req, res) => {
     try {
         const trades = await Barter.find({
-            $or: [{ user1: req.userId }, { user2: req.userId }]
-        }).populate('user1 user2', 'username email');
+            $or: [{ userOffered: req.userId }, { userRequested: req.userId }]
+        }).populate('userOffered userRequested', 'username email');
 
         res.json(trades);
     } catch (err) {
