@@ -1,8 +1,9 @@
+// /utils/comparePassword.js
+
 const bcrypt = require('bcryptjs');
 
-// Compare the plain-text password with the hashed password
-const comparePassword = async (enteredPassword, storedPasswordHash) => {
-    return await bcrypt.compare(enteredPassword, storedPasswordHash);
+const comparePassword = async (password, hashedPassword) => {
+  return await bcrypt.compare(password, hashedPassword);
 };
 
 module.exports = comparePassword;

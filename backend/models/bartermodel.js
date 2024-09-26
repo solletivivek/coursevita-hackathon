@@ -1,11 +1,29 @@
+// /models/barterModel.js
+
 const mongoose = require('mongoose');
 
-const barterSchema = new mongoose.Schema({
-    offeredSkill: { type: mongoose.Schema.Types.ObjectId, ref: 'Skill', required: true },
-    requestedSkill: { type: mongoose.Schema.Types.ObjectId, ref: 'Skill', required: true },
-    userOffered: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-    userRequested: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-    status: { type: String, enum: ['pending', 'completed', 'cancelled'], default: 'pending' },
-});
+const barterSchema = mongoose.Schema(
+  {
+    offeredSkill: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: 'Skill',
+    },
+    requestedSkill: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: 'Skill',
+    },
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: 'User',
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
 
-module.exports = mongoose.model('Barter', barterSchema);
+const Barter = mongoose.model('Barter', barterSchema);
+module.exports = Barter;

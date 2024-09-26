@@ -1,47 +1,46 @@
+// /controllers/skillController.js
+
 const Skill = require('../models/skillModel');
 
-// Post a new skill
-const postSkill = async (req, res) => {
-    const { skillName, description, category } = req.body;
+// Create a skill
+exports.createSkill = async (req, res) => {
+  const { name, description } = req.body;
 
-    try {
-        const skill = new Skill({
-            userId: req.userId,
-            skillName,
-            description,
-            category
-        });
+  try {
+    const skill = new Skill({
+      name,
+      description,
+      user: req.user._id,
+    });
 
-        await skill.save();
-        res.status(201).json(skill);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
+    const createdSkill = await skill.save();
+    res.status(201).json(createdSkill);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
 // Get all skills
-const getSkills = async (req, res) => {
-    try {
-        const skills = await Skill.find();
-        res.json(skills);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
+exports.getAllSkills = async (req, res) => {
+  try {
+    const skills = await Skill.find({});
+    res.json(skills);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
-// Match skills
-const matchSkills = async (req, res) => {
-    const { skillsOffered, skillsNeeded } = req.body;
+// Get skill by ID
+exports.getSkillById = async (req, res) => {
+  try {
+    const skill = await Skill.findById(req.params.id);
 
-    try {
-        const matches = await Skill.find({
-            skillName: { $in: skillsNeeded }
-        }).populate('userId', 'username email');
-
-        res.json(matches);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
+    if (skill) {
+      res.json(skill);
+    } else {
+      res.status(404).json({ message: 'Skill not found' });
     }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
-
-module.exports = { postSkill, getSkills, matchSkills };
