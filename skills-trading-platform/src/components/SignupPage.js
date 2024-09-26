@@ -13,7 +13,7 @@ const SignupPage = () => {
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/register', {
+      const response = await axios.post('http://localhost:3000/api/register', {
         firstName,  // Send firstName to backend
         lastName,   // Send lastName to backend
         username,
