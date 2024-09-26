@@ -3,8 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const SignupPage = () => {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -13,9 +12,8 @@ const SignupPage = () => {
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3000/api/register', {
-        firstName,  // Send firstName to backend
-        lastName,   // Send lastName to backend
+      const response = await axios.post('http://localhost:3000/api/auth/register', {
+        email,
         username,
         password,
       });
@@ -24,6 +22,7 @@ const SignupPage = () => {
     } catch (error) {
       console.error('Error during signup:', error);
       if (error.response) {
+        console.error('Error response:', error.response.data);
         setError(error.response.data.message || 'Signup failed');
       } else {
         setError('Signup failed, please try again');
@@ -37,29 +36,7 @@ const SignupPage = () => {
         <h2 className="text-center mb-4" style={{ color: '#333' }}>Sign Up</h2>
         {error && <div className="alert alert-danger" role="alert">{error}</div>}
         <form onSubmit={handleSignup}>
-          <div className="form-group mb-3">
-            <label htmlFor="firstName" className="form-label">First Name</label>
-            <input
-              type="text"
-              className="form-control"
-              id="firstName"
-              placeholder="Enter your first name"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-            />
-          </div>
-          <div className="form-group mb-3">
-            <label htmlFor="lastName" className="form-label">Last Name</label>
-            <input
-              type="text"
-              className="form-control"
-              id="lastName"
-              placeholder="Enter your last name"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-            />
-          </div>
-          <div className="form-group mb-3">
+        <div className="form-group mb-3">
             <label htmlFor="username" className="form-label">Username</label>
             <input
               type="text"
@@ -68,8 +45,22 @@ const SignupPage = () => {
               placeholder="Enter your username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
+              required
             />
           </div>
+          <div className="form-group mb-3">
+            <label htmlFor="email" className="form-label">Email</label>
+            <input
+              type="email"
+              className="form-control"
+              id="email"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          
           <div className="form-group mb-4">
             <label htmlFor="password" className="form-label">Password</label>
             <input
@@ -79,6 +70,7 @@ const SignupPage = () => {
               placeholder="Enter your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              required
             />
           </div>
           <button type="submit" className="btn btn-primary w-100 mb-3">Sign Up</button>
