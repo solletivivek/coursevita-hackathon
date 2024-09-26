@@ -52,6 +52,8 @@ const FeatureCard = ({ icon: Icon, title, description }) => (
 
 
 
+
+
 const Features = () => (
   <div className="container mx-auto py-16">
     <h2 className="text-3xl font-bold text-center mb-12 text-indigo-800">Why Choose SkillSwap?</h2>
